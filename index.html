@@ -39,7 +39,7 @@
     noCount++;
 
     if (noCount === 1) {
-      noBtn.innerText = "Wrong click? 😅";
+      noBtn.innerText = "Mali ka ata ng pindot? 😅";
       return;
     }
 
@@ -48,9 +48,9 @@
 
     noBtn.style.transform = `translate(${x}px, ${y}px) scale(${Math.max(0.45, 1 - noCount * 0.1)})`;
 
-    if (noCount === 2) noBtn.innerText = "Sigurado ka? 😳";
-    if (noCount === 3) noBtn.innerText = "Teka lang 😭";
-    if (noCount === 4) noBtn.innerText = "Ay grabe 🥺";
+    if (noCount === 2) noBtn.innerText = "Sigurado ka? :(";
+    if (noCount === 3) noBtn.innerText = "Just one chance?";
+    if (noCount === 4) noBtn.innerText = "Grabe 😭";
     if (noCount >= 5) noBtn.style.display = "none";
   });
 
@@ -73,3 +73,4 @@
     if (buttons) buttons.remove();
   }
 </script>
+
