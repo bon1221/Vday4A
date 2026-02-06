@@ -12,7 +12,7 @@ body, html {
 }
 
 .bg-image {
-  background-image: url("pic.jpg");
+  background-image: url("pic.JPG");
   filter: blur(8px);
   height: 100%;
   background-position: center;
@@ -80,3 +80,4 @@ button {
   background-color: #ddd;
   color: #333;
 }
+
