@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Valentine’s Invite 💌</title>
+    <link rel="stylesheet" href="css.css">
+  </head>
+  <body>
+
+  <div class="bg-image"></div>
+
+  <audio id="bg-music" loop>
+    <source src="isee-the-light.mp3" type="audio/mpeg">
+  </audio>
+
+
+  <div class="bg-text">
+    <h1>Will you be my Valentine? ❤️</h1>
+
+    <p id="invite-text">
+      I was wondering if I could steal you away this Valentine’s Day.
+      Nothing too fancy — just us, good food, and a night worth remembering.
+    </p>
+
+    <div class="buttons">
+      <button class="yes-btn" onclick="sayYes()">Yes 💕</button>
+      <button class="no-btn" id="noBtn">No 🙃</button>
+    </div>
+  </div>
+  </body>
+</html>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const music = document.getElementById("bg-music");
+  let noCount = 0;
+
+  noBtn.addEventListener("click", () => {
+    noCount++;
+
+    if (noCount === 1) {
+      noBtn.innerText = "Wrong click? 😅";
+      return;
+    }
+
+    const x = Math.random() * 320 - 160;
+    const y = Math.random() * 220 - 110;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px) scale(${Math.max(0.45, 1 - noCount * 0.1)})`;
+
+    if (noCount === 2) noBtn.innerText = "Sigurado ka? 😳";
+    if (noCount === 3) noBtn.innerText = "Teka lang 😭";
+    if (noCount === 4) noBtn.innerText = "Ay grabe 🥺";
+    if (noCount >= 5) noBtn.style.display = "none";
+  });
+
+  function sayYes() {
+    if (music) {
+      music.volume = 0.4;
+      music.play();
+    }
+
+    document.getElementById("invite-text").innerHTML = `
+      <strong>Dinner at 7? 💌</strong><br><br>
+      📍 Somewhere cozy and quiet<br>
+      👗 Dress cute (but just be you)<br>
+      🚗 I’ll pick you up<br><br>
+      I just want a night where it’s us,
+      good conversations, and maybe a little magic ✨
+    `;
+
+    const buttons = document.querySelector(".buttons");
+    if (buttons) buttons.remove();
+  }
+</script>
