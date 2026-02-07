@@ -2,24 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Valentine’s Invitation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Invitation ✨</title>
     <link rel="stylesheet" href="css.css">
   </head>
   <body>
 
   <div class="bg-image"></div>
 
+  <!-- Floating stars -->
+  <div class="stars-container" id="starsContainer"></div>
+
   <audio id="bg-music" loop>
     <source src="isee-the-light.mp3" type="audio/mpeg">
   </audio>
 
-
-  <div class="bg-text">
+  <div class="bg-text" id="mainCard">
     <h1>Can I be your Valentine? ✨</h1>
 
     <p id="invite-text">
-      <span class="break-line">No big gestures. No expectations.</span>
-      Just a quiet Valentine’s invitation, if you’re comfortable.
+      <span class="break-line">No big gestures. No grand confessions.</span>
+      Just a quiet Valentine's invitation, if you're comfortable.
     </p>
 
     <div class="buttons">
@@ -27,56 +30,112 @@
       <button class="no-btn" id="noBtn">No 🚫</button>
     </div>
   </div>
+
+  <script>
+    // Floating stars
+    function createStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.innerHTML = ['⭐', '✨', '🌟', '💫'][Math.floor(Math.random() * 4)];
+      star.style.left = Math.random() * 100 + '%';
+      star.style.animationDuration = (Math.random() * 3 + 5) + 's';
+      star.style.animationDelay = Math.random() * 2 + 's';
+      star.style.fontSize = (Math.random() * 15 + 15) + 'px';
+      document.getElementById('starsContainer').appendChild(star);
+      
+      setTimeout(() => star.remove(), 8000);
+    }
+
+    // Create stars periodically
+    setInterval(createStar, 800);
+    for(let i = 0; i < 5; i++) setTimeout(createStar, i * 200);
+
+    // Sparkles
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 2000);
+    }
+
+    // Add sparkles on mouse move
+    let lastSparkle = 0;
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastSparkle > 100) {
+        createSparkle(e.clientX, e.clientY);
+        lastSparkle = now;
+      }
+    });
+
+    // No button logic
+    const noBtn = document.getElementById("noBtn");
+    const music = document.getElementById("bg-music");
+    let noCount = 0;
+
+    noBtn.addEventListener("click", () => {
+      noCount++;
+
+      if (noCount === 1) {
+        noBtn.innerText = "Mali ka ata ng pindot? 😅";
+        return;
+      }
+
+      const x = Math.random() * 320 - 160;
+      const y = Math.random() * 220 - 110;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px) scale(${Math.max(0.45, 1 - noCount * 0.1)})`;
+
+      if (noCount === 2) noBtn.innerText = "Sigurado ka? 🥺";
+      if (noCount === 3) noBtn.innerText = "Just one chance? 💔";
+      if (noCount === 4) noBtn.innerText = "Grabe naman 😭";
+      if (noCount >= 5) noBtn.style.display = "none";
+    });
+
+    // Yes button - Success
+    function sayYes() {
+      if (music) {
+        music.volume = 0.4;
+        music.play();
+      }
+
+      // Add success animation
+      document.getElementById('mainCard').classList.add('success-animation');
+
+      // Create confetti
+      for(let i = 0; i < 100; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.top = '-10px';
+          confetti.style.background = ['#ff6b9d', '#c06c84', '#f67280', '#ffd93d', '#6bcf7f'][Math.floor(Math.random() * 5)];
+          confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+      }
+
+      document.getElementById("invite-text").innerHTML = `
+        <strong>Yay! Dinner at 6? 🎉</strong><br><br>
+        📍 Somewhere cozy and quiet<br>
+        👗 Dress cute (just be you)<br>
+        🚗 I'll pick you up<br><br>
+        I just want a night where it's us,<br>
+        a conversation, and a little fun. 😊<br><br>
+        <span style="color: #2d3436; font-size: 1.3rem;">✨ See you! ✨</span>
+      `;
+
+      const buttons = document.querySelector(".buttons");
+      if (buttons) {
+        buttons.style.opacity = '0';
+        buttons.style.transform = 'scale(0.8)';
+        setTimeout(() => buttons.remove(), 300);
+      }
+    }
+  </script>
   </body>
 </html>
-
-<script>
-  const noBtn = document.getElementById("noBtn");
-  const music = document.getElementById("bg-music");
-  let noCount = 0;
-
-  noBtn.addEventListener("click", () => {
-    noCount++;
-
-    if (noCount === 1) {
-      noBtn.innerText = "Mali ka ata ng pindot? 😅";
-      return;
-    }
-
-    const x = Math.random() * 320 - 160;
-    const y = Math.random() * 220 - 110;
-
-    noBtn.style.transform = `translate(${x}px, ${y}px) scale(${Math.max(0.45, 1 - noCount * 0.1)})`;
-
-    if (noCount === 2) noBtn.innerText = "Sigurado ka? :(";
-    if (noCount === 3) noBtn.innerText = "Just one chance?";
-    if (noCount === 4) noBtn.innerText = "Grabe 😭";
-    if (noCount >= 5) noBtn.style.display = "none";
-  });
-
-  function sayYes() {
-    if (music) {
-      music.volume = 0.4;
-      music.play();
-    }
-
-    document.getElementById("invite-text").innerHTML = `
-      <strong>Dinner at 6? :)</strong><br><br>
-      📍 Somewhere cozy and quiet<br>
-      👗 Dress cute (just be you)<br>
-      🚗 I’ll pick you up<br><br>
-      I just want a night where it’s us,
-      a conversation, and a little fun ✨
-    `;
-
-    const buttons = document.querySelector(".buttons");
-    if (buttons) buttons.remove();
-  }
-</script>
-
-
-
-
-
-
-
