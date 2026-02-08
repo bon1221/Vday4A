@@ -13,6 +13,9 @@
   <!-- Floating stars -->
   <div class="stars-container" id="starsContainer"></div>
 
+  <!-- Floating hearts -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
   <audio id="bg-music" loop>
     <source src="isee-the-light.mp3" type="audio/mpeg">
   </audio>
@@ -21,8 +24,9 @@
     <h1>Can I be your Valentine? ✨</h1>
 
     <p id="invite-text">
-      <span class="break-line">No big gestures. No expectations.</span>
-      Just a quiet Valentine's invitation, if you're comfortable.
+      <span class="break-line">Even if the answer stays unchanged,</span>
+      <span class="break-line">I couldn't let this chance slip by.</span>
+      <span class="break-line subtle-text">Would you consider one more evening together?</span>
     </p>
 
     <div class="buttons">
@@ -80,7 +84,7 @@
       noCount++;
 
       if (noCount === 1) {
-        noBtn.innerText = "Mali ka ata ng pindot? 😅";
+        noBtn.innerText = "Wrong click? 😅";
         return;
       }
 
@@ -91,12 +95,49 @@
 
       if (noCount === 2) noBtn.innerText = "Sigurado ka? 🥺";
       if (noCount === 3) noBtn.innerText = "Just one chance? 💔";
-      if (noCount === 4) noBtn.innerText = "Grabe naman 😭";
-      if (noCount >= 5) noBtn.style.display = "none";
+      if (noCount === 4) noBtn.innerText = "No na talaga? 😔";
+      if (noCount === 5) noBtn.innerText = "Grabe naman 😭";
+      if (noCount >= 6) {
+        noBtn.style.opacity = '0';
+        setTimeout(() => noBtn.style.display = "none", 300);
+      }
     });
+
+    // Floating hearts animation
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+      heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+      document.getElementById('heartsContainer').appendChild(heart);
+      
+      setTimeout(() => heart.remove(), 5000);
+    }
 
     // Yes button - Success
     function sayYes() {
+      // Hide the title immediately
+      const title = document.querySelector('h1');
+      title.style.display = 'none';
+      title.style.visibility = 'hidden';
+      title.style.opacity = '0';
+      
+      // Hide only the invitation text spans, not the container
+      const breakLines = document.querySelectorAll('.break-line');
+      breakLines.forEach(line => {
+        line.style.display = 'none';
+        line.style.visibility = 'hidden';
+        line.style.opacity = '0';
+      });
+      
+      // Hide buttons immediately
+      const buttons = document.querySelector('.buttons');
+      buttons.style.display = 'none';
+      buttons.style.visibility = 'hidden';
+      buttons.style.opacity = '0';
+      
       if (music) {
         music.volume = 0.4;
         music.play();
@@ -105,41 +146,80 @@
       // Add success animation
       document.getElementById('mainCard').classList.add('success-animation');
 
-      // Create confetti
-      for(let i = 0; i < 100; i++) {
+      // Create confetti with hearts
+      for(let i = 0; i < 150; i++) {
         setTimeout(() => {
           const confetti = document.createElement('div');
           confetti.className = 'confetti';
+          
+          // Mix of shapes
+          if (Math.random() > 0.5) {
+            confetti.innerHTML = ['❤️', '💕', '💖', '✨', '⭐'][Math.floor(Math.random() * 5)];
+            confetti.style.fontSize = (Math.random() * 10 + 15) + 'px';
+          } else {
+            confetti.style.width = (Math.random() * 8 + 6) + 'px';
+            confetti.style.height = (Math.random() * 8 + 6) + 'px';
+            confetti.style.background = ['#ff6b9d', '#c06c84', '#f67280', '#ffd93d', '#6bcf7f', '#a29bfe'][Math.floor(Math.random() * 6)];
+          }
+          
           confetti.style.left = Math.random() * 100 + '%';
-          confetti.style.top = '-10px';
-          confetti.style.background = ['#ff6b9d', '#c06c84', '#f67280', '#ffd93d', '#6bcf7f'][Math.floor(Math.random() * 5)];
+          confetti.style.top = '-20px';
           confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
           document.body.appendChild(confetti);
-          setTimeout(() => confetti.remove(), 3000);
-        }, i * 30);
+          setTimeout(() => confetti.remove(), 4000);
+        }, i * 20);
       }
 
-      document.getElementById("invite-text").innerHTML = `
-        <strong>Yayyyyy! Dinner at 6 PM on February 15.</strong><br><br>
-        <div style="text-align: left; display: inline-block;">
-          📍 Wildflour Restaurant QC<br>
-          👗 Any dress you like (just be you)<br>
-          🚗 Kuya grab driver will pick us up HAHAHAHA
-        </div>
-        <br><br>
-        I just want a night where it's us,<br>
-        a conversation, and a little fun 😊<br><br>
-        <span style="color: #2d3436; font-size: 1.3rem;">✨ See you! ✨</span>
-      `;
+      // Sparkle burst from center
+      setTimeout(() => {
+        for(let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle-burst';
+            const angle = (Math.PI * 2 * i) / 50;
+            const distance = Math.random() * 300 + 100;
+            sparkle.style.setProperty('--angle', angle + 'rad');
+            sparkle.style.setProperty('--distance', distance + 'px');
+            sparkle.innerHTML = '✨';
+            document.getElementById('mainCard').appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 2000);
+          }, i * 30);
+        }
+      }, 300);
 
-      const buttons = document.querySelector(".buttons");
-      if (buttons) {
-        buttons.style.opacity = '0';
-        buttons.style.transform = 'scale(0.8)';
-        setTimeout(() => buttons.remove(), 300);
-      }
+      // Update text with staggered animation
+      setTimeout(() => {
+        document.getElementById("invite-text").innerHTML = `
+          <div class="success-content">
+            <div class="success-line" style="animation-delay: 0.1s;">
+              <strong class="date-emphasis">Dinner at 6 PM • February 15</strong>
+            </div>
+            <div class="details-container">
+              <div class="detail-item" style="animation-delay: 0.3s;">
+                <span class="detail-icon">📍</span>
+                <span class="detail-text">Wildflour Restaurant QC</span>
+              </div>
+              <div class="detail-item" style="animation-delay: 0.5s;">
+                <span class="detail-icon">👗</span>
+                <span class="detail-text">Wear whatever makes you feel comfortable</span>
+              </div>
+              <div class="detail-item" style="animation-delay: 0.7s;">
+                <span class="detail-icon">🚗</span>
+                <span class="detail-text">Kuya grabe driver will pick us up HAHAHA</span>
+              </div>
+            </div>
+            <div class="success-line closing-message" style="animation-delay: 0.9s;">
+              Just looking forward to good food,<br>
+              good conversation, and your company.
+            </div>
+            <div class="success-line final-sparkle" style="animation-delay: 1.1s;">
+              Hope to see you!
+            </div>
+          </div>
+        `;
+      }, 600);
     }
   </script>
   </body>
 </html>
-
