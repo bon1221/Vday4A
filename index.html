@@ -76,6 +76,61 @@
       }
     });
 
+    // Track response
+    let userResponse = null;
+    
+    // IMPORTANT: Replace this URL with your own webhook/server endpoint
+    // See instructions below on how to set this up
+    const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxLbXyHpjjGxBb1HGqMlvLLb3NAwiKzVvsswu0SoPxhtgP-ANSP4ZoenZ29fhAooKBxDA/exec';
+    
+    // Function to log the response
+    function logResponse(response) {
+      userResponse = response;
+      const timestamp = new Date().toLocaleString();
+      console.log(`Response: ${response} at ${timestamp}`);
+      
+      // Store in localStorage so you can check it later
+      localStorage.setItem('valentineResponse', JSON.stringify({
+        response: response,
+        timestamp: timestamp
+      }));
+      
+      // Send to remote server (Option 3)
+      sendToServer(response, timestamp);
+    }
+    
+    // Send response to your server/webhook
+    function sendToServer(response, timestamp) {
+      // Only send if webhook URL is configured
+      if (WEBHOOK_URL === 'YOUR_WEBHOOK_URL_HERE') {
+        console.log('Webhook not configured. Skipping remote logging.');
+        return;
+      }
+      
+      const data = {
+        response: response,
+        timestamp: timestamp,
+        userAgent: navigator.userAgent,
+        page: window.location.href
+      };
+      
+      // Send data to webhook
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        mode: 'no-cors' // Use this for Google Apps Script or simple webhooks
+      })
+      .then(() => {
+        console.log('Response sent to server successfully');
+      })
+      .catch((error) => {
+        console.error('Error sending to server:', error);
+      });
+    }
+
     // No button logic
     const noBtn = document.getElementById("noBtn");
     const music = document.getElementById("bg-music");
@@ -99,6 +154,8 @@
       if (noCount === 4) noBtn.innerText = "No na talaga? 😔";
       if (noCount === 5) noBtn.innerText = "Grabe naman 😭";
       if (noCount >= 6) {
+        // Log the "No" response
+        logResponse('NO');
         noBtn.style.opacity = '0';
         setTimeout(() => noBtn.style.display = "none", 300);
       }
@@ -119,6 +176,9 @@
 
     // Yes button - Success
     function sayYes() {
+      // Log the "Yes" response
+      logResponse('YES');
+      
       // Hide the title immediately
       const title = document.querySelector('h1');
       title.style.display = 'none';
@@ -199,7 +259,7 @@
             <div class="details-container">
               <div class="detail-item" style="animation-delay: 0.3s;">
                 <span class="detail-icon">📍</span>
-                <span class="detail-text">GAEA (191 A. Mabini St. San Juan City)</span>
+                <span class="detail-text">Wildflour Restaurant QC</span>
               </div>
               <div class="detail-item" style="animation-delay: 0.5s;">
                 <span class="detail-icon">👗</span>
@@ -207,7 +267,7 @@
               </div>
               <div class="detail-item" style="animation-delay: 0.7s;">
                 <span class="detail-icon">🚗</span>
-                <span class="detail-text">Kuya grab driver will pick us up HAHAHA</span>
+                <span class="detail-text">Kuya grabe driver will pick us up HAHAHA</span>
               </div>
             </div>
             <div class="success-line closing-message" style="animation-delay: 0.9s;">
@@ -215,7 +275,7 @@
               good conversation, and your company.
             </div>
             <div class="success-line final-sparkle" style="animation-delay: 1.1s;">
-              Hope to see you!
+              Can't wait to see you!
             </div>
           </div>
         `;
@@ -224,10 +284,3 @@
   </script>
   </body>
 </html>
-
-
-
-
-
-
-
