@@ -277,12 +277,6 @@ h1 {
   }
 }
 
-.subtle-text {
-  font-style: italic;
-  color: #2d3436;
-  font-size: 1.05rem;
-}
-
 strong {
   color: #2d3436;
   font-size: 1.2rem;
@@ -656,5 +650,6 @@ button {
 audio {
   display: none;
 }
+
 
 
