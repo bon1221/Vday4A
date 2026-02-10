@@ -254,7 +254,7 @@ h1 {
 .break-line {
   display: block;
   margin: 10px 0;
-  font-style: italic;
+  font-style: 'Dancing Script', cursive;
   font-size: 1.05rem;
   color: #2d3436;
   opacity: 0;
@@ -656,4 +656,5 @@ button {
 audio {
   display: none;
 }
+
 
