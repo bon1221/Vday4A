@@ -264,6 +264,7 @@ h1 {
 .break-line:nth-child(1) { animation-delay: 0.2s; }
 .break-line:nth-child(2) { animation-delay: 0.4s; }
 .break-line:nth-child(3) { animation-delay: 0.6s; }
+.break-line:nth-child(4) { animation-delay: 0.8s; }
 
 @keyframes fadeInUp {
   0% {
@@ -655,3 +656,4 @@ button {
 audio {
   display: none;
 }
+
